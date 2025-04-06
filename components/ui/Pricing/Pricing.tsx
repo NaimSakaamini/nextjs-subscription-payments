@@ -141,6 +141,19 @@ export default function Pricing({ user, products, subscription }: Props) {
                   Yearly billing
                 </button>
               )}
+              {intervals.includes('biweekly') && (
+                <button
+                  onClick={() => setBillingInterval('biweekly')}
+                  type="button"
+                  className={`${
+                    billingInterval === 'biweekly'
+                      ? 'relative w-1/2 bg-zinc-700 border-zinc-800 shadow-sm text-white'
+                      : 'ml-0.5 relative w-1/2 border border-transparent text-zinc-400'
+                  } rounded-md m-1 py-2 text-sm font-medium whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 focus:z-10 sm:w-auto sm:px-8`}
+                >
+                  Bi-Weekly billing
+                </button>
+              )}
             </div>
           </div>
           <div className="mt-12 space-y-0 sm:mt-16 flex flex-wrap justify-center gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0">
