@@ -40,13 +40,14 @@ export async function handleRefund(orderId: string, amount: number) {
     throw new Error('Order not found');
   }
 
-  if (order.status !== 'completed') {
-    throw new Error('Refunds can only be processed for completed orders');
+  if (order.status !== 'completed' && order.status !== 'partially_refunded') {
+    throw new Error('Refunds can only be processed for completed or partially refunded orders');
   }
 
   await refundPayment(order.paymentId, amount);
 
-  await updateOrder(orderId, { status: 'refunded' });
+  const newStatus = amount < order.totalAmount ? 'partially_refunded' : 'refunded';
+  await updateOrder(orderId, { status: newStatus });
 
   sendRefundNotification(order.customerId);
 }
