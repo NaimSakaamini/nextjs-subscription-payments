@@ -33,4 +33,22 @@ export async function GET(request: NextRequest) {
       'You are now signed in.'
     )
   );
+export async function handleRefund(orderId: string, amount: number) {
+  const order = await fetchOrderDetails(orderId);
+
+  if (!order) {
+    throw new Error('Order not found');
+  }
+
+  if (order.status !== 'completed') {
+    throw new Error('Refunds can only be processed for completed orders');
+  }
+
+  await refundPayment(order.paymentId, amount);
+
+  await updateOrder(orderId, { status: 'refunded' });
+
+  sendRefundNotification(order.customerId);
+}
+
 }
